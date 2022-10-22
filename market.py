@@ -8,12 +8,12 @@ app = Flask(__name__)
 def home_page():
     return render_template("home.html")
 
-@app.route("/market")
-def market():
-    return "<p>Market page</p>"
+@app.route("/market/<name>")
+def market(name):
+    items=[{'id':1,'name':'Phone','barcode':'893212299897','price':500},
+           {'id':2,'name':'Laptop','barcode':'123985473165','price':900},
+           {'id':3,'name':'Keyboard','barcode':'231985128446','price':150}]
+    return render_template("market.html",name=items)
 
-@app.route("/market/<item>")
-def item(item):
-    return f"<p>Item page</p>{item}"
 
 
