@@ -33,6 +33,3 @@ def market():
     #    db.session.add(g)
      #   db.session.commit()
     return render_template("market.html",name=items)
-
-
-
