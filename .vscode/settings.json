@@ -1,5 +1,6 @@
 {
-  "sqltools.useNodeRuntime": true,
+  "sqltools.useNodeRuntime": false,
+  "sqltools.detectNodeRuntime": false,
   "sqltools.connections": [
     {
       "previewLimit": 50,
@@ -9,3 +10,4 @@
     }
   ]
 }
+ 

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}
+Register Page
+
+{% endblock title %}
+{% block content %}
+<body class="text-center">
+    <div class="container">
+    <form action="" method="POST" class="form-register" style="color:white">
+        <img class="mb-4" src="https://th.bing.com/th/id/R.8ea24bf404449829772d8458c4785a74?rik=SEr2JSzRQhXsNA&pid=ImgRaw&r=0" alt=""
+        style="size:1px;widht:1px;height:105px;">
+        <br>
+        <h2>Please create an account</h2>
+        <br>
+{{ form.username.label()}}
+{{ form.username(class="form-control",placeholder="User Name")}}
+
+
+{{ form.email.label()}}
+{{ form.email(class="form-control",placeholder="Email")}}
+
+
+{{ form.password.label()}}
+{{ form.password(class="form-control",placeholder="Password")}}
+
+
+{{ form.confirm_password.label()}}
+{{ form.confirm_password(class="form-control",placeholder="Confirm Password")}}
+
+<br>
+{{ form.submit(class="btn btn-primary")}}
+
+</form>
+
+</div>
+</body>
+
+
+{% endblock content%}
