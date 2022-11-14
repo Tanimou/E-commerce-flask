@@ -1,5 +1,5 @@
 {
-  "sqltools.useNodeRuntime": false,
+  "sqltools.useNodeRuntime": true,
   "sqltools.detectNodeRuntime": false,
   "sqltools.connections": [
     {
