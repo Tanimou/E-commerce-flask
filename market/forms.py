@@ -3,7 +3,8 @@
 # The username field is validated using the DataRequired() and Length() validators
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField,PasswordField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from market.models import User
 def create_username_field():
     return StringField('User Name',validators=[Length(min=2,max=30),DataRequired()])
 
@@ -39,4 +40,13 @@ class RegisterForm(FlaskForm):
         confirm_password = create_confirm_password_field()
         submit = create_submit_button()
 
-    
+    #create a method that check if a user already exists in the database
+    #if the user exists, the method will flash an error message to the user
+    #if the user does not exist, the method will add the user to the database
+        def validate_username(self,username_to_check):
+            if user := User.query.filter_by(username=username_to_check.data).first():
+                raise ValidationError('Username already exists! Please try a different username.')
+
+        def validate_email_address(self,email_address_to_check):
+            if email_address := User.query.filter_by(email_address=email_address_to_check.data).first():
+                raise ValidationError('Email address already exists! Please try a different email address.')
