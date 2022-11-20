@@ -1,10 +1,22 @@
 #Import the database object (db) from the main application module
 #This will define our database and initialize the SQLAlchemy extension
 from datetime import datetime
-from market import db
+from market import db,bcrypt,login_manager
+from flask_login import UserMixin
+
+# This code loads a user from the database, using the user's id
+# This code is used in the login form, to check whether the user exists in the database
+# The function name is load_user
+# The variable name is user_id
+# The line of code is called in the login form, and it uses the user_id variable
+# It returns the user object
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 #Define a base model for other database tables to inherit
-class Base(db.Model):
+class Base(db.Model,UserMixin):
 
     __abstract__  = True
 
@@ -28,18 +40,26 @@ class User(Base):
                             lazy = 'dynamic')
     budget=db.Column(db.Integer,nullable=False,default=1000)
 
-    def is_authenticated(self):
-        return True
+    # This code is used to generate a hash of the password. The hash is stored in the database 
+    # and the password itself is not stored. When a user logs in, the password is hashed and 
+    # compared to the hash in the database. If the hashes match, the password is correct.
 
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    # def get_id(self):
-    #     return unicode(self.id)
-
+    @property
+    # This allows you to access the password attribute
+    def password(self):
+        # This is the getter
+        return self.password
+    @password.setter
+    # This allows you to set the password attribute
+    def password(self, password):
+        # This is the setter
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        
+    
+        #create a function for checking the password 
+    def check_password_correction(self,attempted_password):
+        return bcrypt.check_password_hash(pw_hash=self.password_hash, password=attempted_password)
+   
     def __repr__(self):
         return '<User %r>' % (self.name)
 
@@ -74,7 +94,7 @@ def init_db():
 # This function creates a new user in the database.
 def add_user(username, email, password):
     # Create a new User object
-    user = User(username=username,email_address=email,password_hash=password)
+    user = User(username=username,email_address=email,password=password)
     # Add the new user to the database session
     db.session.add(user)
     # Commit the changes to the database

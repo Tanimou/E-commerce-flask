@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField,PasswordField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from market.models import User
+from market import bcrypt
 def create_username_field():
     return StringField('User Name',validators=[Length(min=2,max=30),DataRequired()])
 
@@ -50,3 +51,28 @@ class RegisterForm(FlaskForm):
         def validate_email_address(self,email_address_to_check):
             if email_address := User.query.filter_by(email_address=email_address_to_check.data).first():
                 raise ValidationError('Email address already exists! Please try a different email address.')
+            
+    #create a class called LoginForm that inherits from the FlaskForm class
+    #the LoginForm class will have a username and password field
+    #the LoginForm class will also have a submit button
+    #the username field will be validated using the DataRequired() validators
+    #the password field will be validated using the DataRequired() validators
+    #the submit button will be validated using the SubmitField() validators
+    #the LoginForm class will also have a method called validate_username that will check if the username exists in the database
+    #the LoginForm class will also have a method called validate_password that will check if the password is correct
+class LoginForm(FlaskForm):
+        username = StringField(label='User Name',validators=[DataRequired()])
+        password = PasswordField(label='Password',validators=[DataRequired()])
+        submit = SubmitField(label='Sign In')
+
+        # def validate_username(self,username_to_check):
+        #     user = User.query.filter_by(username=username_to_check.data).first()
+        #     if not user:
+        #         raise ValidationError('That username does not exist, please try again.')
+
+        # def validate_password(self,password_to_check):
+        #     if user := User.query.filter_by(username=self.username.data).first():
+        #         if not self.check_password_correction(attempted_password=password_to_check.data):
+        #             raise ValidationError('Password incorrect, please try again.')
+                
+    
